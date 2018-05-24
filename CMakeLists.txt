@@ -47,4 +47,6 @@ endfunction()
 # ------------------------------------------
 TARGET_FILE(vulkan_hpp)
 TARGET_FILE(instance)
+TARGET_FILE(enumerate_devices)
+TARGET_FILE(init_command_buffer)
 
