@@ -9,13 +9,14 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
-                "${workspaceFolder}/**",
                 "${env:VK_SDK_PATH}/Include/**"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "VK_USE_PLATFORM_WIN32_KHR",
+                "USE_VULKAN_HPP"
             ],
             "cStandard": "c11",
             "cppStandard": "c++17",
