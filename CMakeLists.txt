@@ -17,6 +17,8 @@ set(VULKAN_INCLUDE_DIR ${Vulkan_INCLUDE_DIR})
 set(VULKAN_LIBRARY ${Vulkan_LIBRARY})
 include_directories(rt ${VULKAN_INCLUDE_DIR})
 
+set(CMAKE_CXX_STANDARD 17)
+
 # macro to create new target
 function(TARGET_FILE NAME)
 add_executable(
@@ -49,4 +51,5 @@ TARGET_FILE(vulkan_hpp)
 TARGET_FILE(instance)
 TARGET_FILE(enumerate_devices)
 TARGET_FILE(init_command_buffer)
+TARGET_FILE(init_swapchain)
 
