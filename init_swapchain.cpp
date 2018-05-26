@@ -17,8 +17,13 @@
 
 /// \file importing Vulkan-Hpp from Vulkan SDK
 
-static std::string app_name{__FILE__};
-static std::string engine_name {"Vulkan.hpp"};
+static const char* app_name = __FILE__;
+static const char* engine_name = "Vulkan.hpp";
+
+[[deprecated]] std::u16string utf8_to_utf16(const std::string& str) {
+  std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
+  return converter.from_bytes(str);
+}
 
 std::vector<const char*> getInstanceExtensions() {
   std::vector<const char*> extensions;
@@ -71,7 +76,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
   return 0;
 }
 
-HWND initializeWindow(std::string& className, std::string& windowName, LONG width, LONG height){
+HWND initializeWindow(std::u16string& className, std::u16string& windowName, LONG width, LONG height){
   // create window class
   WNDCLASSEX windowClass = {};
   HINSTANCE instance = GetModuleHandle(nullptr);
@@ -82,7 +87,7 @@ HWND initializeWindow(std::string& className, std::string& windowName, LONG widt
   windowClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
   windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
   windowClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-  windowClass.lpszClassName = className.c_str();
+  windowClass.lpszClassName = (LPCWSTR)className.c_str();
   windowClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
 
   if (!RegisterClassEx(&windowClass)) {
@@ -93,7 +98,7 @@ HWND initializeWindow(std::string& className, std::string& windowName, LONG widt
   AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
   HWND window = CreateWindowEx(
-    0, className.c_str(), windowName.c_str(),
+    0, (LPCWSTR)className.c_str(), (LPCWSTR)windowName.c_str(),
     WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_SYSMENU, 100, 100,
     windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
     nullptr, nullptr, instance, nullptr);
@@ -110,7 +115,7 @@ int main() {
 #if defined(USE_VULKAN_HPP)
   try {
     vk::ApplicationInfo appInfo(
-      app_name.c_str(), 1, engine_name.c_str(), 1, VK_API_VERSION_1_1);
+      app_name, 1, engine_name, 1, VK_API_VERSION_1_1);
     // get extensions
     std::vector<const char*> instanceExtensions = getInstanceExtensions();
     // create instance wiht instance extensions
@@ -127,8 +132,9 @@ int main() {
     uint32_t width = 500;
     uint32_t height = 500;
 #if defined(VK_USE_PLATFORM_WIN32_KHR)
-    std::string windowName = "Sample Window";
-    HWND window = initializeWindow(app_name,  windowName, width, height);
+    std::u16string windowName = u"Sample Window";
+    std::u16string appName = utf8_to_utf16(app_name);
+    HWND window = initializeWindow(appName,  windowName, width, height);
     vk::UniqueSurfaceKHR surface = instance->createWin32SurfaceKHRUnique(
       vk::Win32SurfaceCreateInfoKHR({}, GetModuleHandle(nullptr), window));
 #else

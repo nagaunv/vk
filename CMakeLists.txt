@@ -39,6 +39,8 @@ target_link_libraries(
   ${VULKAN_LIBRARY}
   -static
 )
+target_compile_definitions(${NAME} PRIVATE UNICODE=1 VK_USE_PLATFORM_WIN32_KHR=1)
+target_compile_definitions(${NAME}-cpp PRIVATE UNICODE=1 VK_USE_PLATFORM_WIN32_KHR=1)
 target_compile_definitions(${NAME}-cpp PRIVATE USE_VULKAN_HPP=1)
 add_test(${NAME} ${NAME} COMMAND ${NAME})
 add_test(${NAME}-cpp ${NAME}-cpp COMMAND ${NAME}-cpp)
