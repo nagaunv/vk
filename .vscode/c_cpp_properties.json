@@ -4,12 +4,14 @@
             "name": "Win32",
             "browse": {
                 "path": [
-                    "${workspaceFolder}"
+                    "${workspaceFolder}/*",
+                     "${env:VK_SDK_PATH}/Include/**"
                 ],
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
-                "${env:VK_SDK_PATH}/Include/**"
+                "${env:VK_SDK_PATH}/Include/*",
+                "${workspaceFolder}/*"
             ],
             "defines": [
                 "_DEBUG",
